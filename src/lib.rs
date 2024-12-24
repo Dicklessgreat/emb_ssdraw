@@ -7,11 +7,11 @@ use embedded_graphics::{
     Drawable,
 };
 
-pub struct ScreenSaver<R> {
-    points: Vec<Point, 32>,
+pub struct ScreenSaver<R, const N: usize> {
+    points: Vec<Point, N>,
     rng: R,
 }
-impl<R:RngCore> ScreenSaver<R> {
+impl<R:RngCore, const N: usize> ScreenSaver<R, N> {
     pub fn new(rng: R) -> Self {
         Self {
             points: Vec::new(),
@@ -29,7 +29,7 @@ impl<R:RngCore> ScreenSaver<R> {
     }
 }
 
-impl<R:RngCore> Drawable for ScreenSaver<R> {
+impl<R:RngCore, const N: usize> Drawable for ScreenSaver<R, N> {
     type Color = BinaryColor;
     type Output = ();
     fn draw<D>(&self, target: &mut D) -> Result<(), D::Error>
