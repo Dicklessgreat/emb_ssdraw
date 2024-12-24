@@ -1,0 +1,9 @@
+[package]
+name = "emb_ssdraw"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+heapless = "0.8"
+rand = { version = "0.8.5", default-features = false }
+embedded-graphics = "0.8.1"
