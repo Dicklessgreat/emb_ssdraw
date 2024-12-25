@@ -18,6 +18,14 @@ impl<R:RngCore, const N: usize> ScreenSaver<R, N> {
             rng,
         }
     }
+    pub fn tick_draw<D>(&mut self, target: &mut D) -> Result<(), D::Error> 
+    where D: DrawTarget<Color = BinaryColor> 
+    {
+        let size = target.bounding_box().size;
+        self.tick(size.width, size.height);
+        self.draw(target)
+    }
+
     pub fn tick(&mut self, w: u32, h: u32) {
         let x = (self.rng.next_u32() % w) as i32;
         let y = (self.rng.next_u32() % h) as i32;
