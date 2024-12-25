@@ -18,14 +18,14 @@ impl<R:RngCore, const N: usize> ScreenSaver<R, N> {
             rng,
         }
     }
-    pub fn tick(&mut self) {
-        if let Err(e) = self.points.push(Point {
-            x: (self.rng.next_u32() / 33554432) as i32,
-            y: (self.rng.next_u32() / 67108864) as i32,
-        }) {
+    pub fn tick(&mut self, w: u32, h: u32) {
+        let x = (self.rng.next_u32() % w) as i32;
+        let y = (self.rng.next_u32() % h) as i32;
+        if let Err(overflowed) = self.points.push(Point::new(x, y)) {
             self.points.remove(0);
-            let _ = self.points.push(e);
+            let _ = self.points.push(overflowed);
         }
+
     }
 }
 
