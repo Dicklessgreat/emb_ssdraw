@@ -14,7 +14,7 @@
 //! ```
 //! use rand::rngs::SmallRng;
 //! use rand::SeedableRng;
-//! 
+//!
 //! let mut rng = SmallRng::seed_from_u64(42);
 //! let mut screen_saver = ScreenSaver::<_, 32>::new(rng);
 //! let mut display = Display::new();
@@ -23,24 +23,20 @@
 //!     screen_saver.tick_draw(&mut display);
 //!     display.flush();
 //! }
-//! 
+//!
 //! ```
 
 #![no_std]
+use embedded_graphics::{pixelcolor::BinaryColor, prelude::*, Drawable};
 use heapless::Vec;
 use rand::RngCore;
-use embedded_graphics::{
-    prelude::*,
-    pixelcolor::BinaryColor,
-    Drawable,
-};
 
 /// A screen saver that draws a random number of points on the display
 pub struct ScreenSaver<R, const N: usize> {
     points: Vec<Point, N>,
     rng: R,
 }
-impl<R:RngCore, const N: usize> ScreenSaver<R, N> {
+impl<R: RngCore, const N: usize> ScreenSaver<R, N> {
     /// Create a new screen saver
     pub fn new(rng: R) -> Self {
         Self {
@@ -50,8 +46,9 @@ impl<R:RngCore, const N: usize> ScreenSaver<R, N> {
     }
     /// Tick the screen saver and draw it to the target
     /// this is alias for calling [`tick`](ScreenSaver::tick) with target size and after [`draw`](ScreenSaver::draw) with the target
-    pub fn tick_draw<D>(&mut self, target: &mut D) -> Result<(), D::Error> 
-    where D: DrawTarget<Color = BinaryColor> 
+    pub fn tick_draw<D>(&mut self, target: &mut D) -> Result<(), D::Error>
+    where
+        D: DrawTarget<Color = BinaryColor>,
     {
         let size = target.bounding_box().size;
         self.tick(size.width, size.height);
@@ -68,18 +65,16 @@ impl<R:RngCore, const N: usize> ScreenSaver<R, N> {
             self.points.remove(0);
             let _ = self.points.push(overflowed);
         }
-
     }
 }
 
-impl<R:RngCore, const N: usize> Drawable for ScreenSaver<R, N> {
+impl<R: RngCore, const N: usize> Drawable for ScreenSaver<R, N> {
     type Color = BinaryColor;
     type Output = ();
     fn draw<D>(&self, target: &mut D) -> Result<(), D::Error>
     where
         D: DrawTarget<Color = Self::Color>,
     {
-
         for p in self.points.iter() {
             let _ = Pixel(*p, BinaryColor::On).draw(target);
         }
