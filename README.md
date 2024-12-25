@@ -1,4 +1,4 @@
-# Screen Saver
+# emb-ssdraw
 
 A simple embedded screen saver that draws random points on a display. This crate is designed for `no_std` environments and uses the `embedded-graphics` library.
 
