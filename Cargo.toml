@@ -2,6 +2,12 @@
 name = "emb-ssdraw"
 version = "0.1.0"
 edition = "2021"
+authors = ["DicklessGreat<dicklessgreat@gmail.com>"]
+description = "A simple embedded screen saver that draws random points on a display"
+keywords = ["embedded", "no-std", "graphics"]
+license = "MIT"
+repository = "https://github.com/Dicklessgreat/emb_ssdraw"
+categories = ["embedded"]
 
 [dependencies]
 heapless = "0.8"
